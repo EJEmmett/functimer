@@ -9,12 +9,12 @@ A function decorator/wrapper package to time a given function.
 - `functimer/classes.py`: contains general classes and enums of package.
 
 ### Installation
-To install from PYPI:
+PYPI:
 
     pip install functimer
 
-To manually install:
-    
+Manual:
+
     poetry build
     pip install dist/*.whl
 
