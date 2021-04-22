@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "functimer"
+version = "1.0.0"
+description = "A function decorator/wrapper package to time a given function."
+authors = ["Edward Emmett <edemms12@gmail.com>"]
+repository = "https://github.com/EJEmmett/functimer"
+readme = "README.md"
+license = "MIT"
+
+
+
+keywords = ["timer", "timed", "timing", "function", "decorator"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.3"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
