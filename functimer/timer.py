@@ -1,7 +1,7 @@
 import timeit
 from functools import wraps
 
-from functimer.classes import Result, Unit, TimerResult
+from functimer.classes import Result, TimerResult, Unit
 from functimer.util import suppress_stdout
 
 timeit.template = """
