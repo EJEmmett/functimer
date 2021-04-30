@@ -1,4 +1,5 @@
 from enum import Enum
+from functools import total_ordering
 from typing import Any, Union
 
 
@@ -19,7 +20,10 @@ _unit_map = {
 }
 
 
-class TimerResult:
+@total_ordering
+class TimedResult:
+    __slots__ = ["value", "unit", "precision"]
+
     def __init__(self, value: float, unit: Unit, precision: int = 2):
         # Time in seconds
         self.value = value
@@ -34,8 +38,14 @@ class TimerResult:
     def __repr__(self):
         return (
             f"<{self.__class__.__module__}.{self.__class__.__qualname__}"
-            f"({', '.join(f'{k}: {v}' for k, v in self.__dict__.items())})"
+            f"({', '.join(f'{slot}: {getattr(self, slot)}' for slot in self.__slots__)})>"
         )
 
+    def __lt__(self, other):
+        return self.value < other
 
-Result = Union[TimerResult, tuple[TimerResult, Any]]
+    def __eq__(self, other):
+        return self.value < other
+
+
+Result = Union[TimedResult, tuple[TimedResult, Any]]

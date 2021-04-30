@@ -2,12 +2,6 @@
 
 A function decorator/wrapper package to time a given function.
 
-## Contents
-
-- `functimer/timer.py`: contains the `timer` decorator.
-- `functimer/util.py`: contains `get_unit` function, parses the unit from given string following the format of `0.0 ms`
-- `functimer/classes.py`: contains general classes and enums of package.
-
 ### Installation
 PYPI:
 

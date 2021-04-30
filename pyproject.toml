@@ -10,11 +10,11 @@ license = "MIT"
 keywords = ["timer", "timed", "timing", "function", "decorator"]
 
 [tool.poetry.dependencies]
-python = "^3.6.1"
+python = "^3.6.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.3"
-black = "^20.8b1"
+black = "^21.4b2"
 isort = "^5.8.0"
 pre-commit = "^2.12.1"
 

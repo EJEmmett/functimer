@@ -1,7 +1,8 @@
 import timeit
 from functools import wraps
+from typing import Callable
 
-from functimer.classes import Result, TimerResult, Unit
+from functimer.classes import Result, TimedResult, Unit
 from functimer.util import suppress_stdout
 
 timeit.template = """
@@ -16,7 +17,7 @@ def inner(_it, _timer{init}):
 
 
 def timed(
-    func=None,
+    func: Callable = None,
     *,
     disabled: bool = False,
     unit: Unit = Unit.microsecond,
@@ -24,11 +25,11 @@ def timed(
     enable_return: bool = False,
     estimate: bool = False,
     number: int = 1000,
-):
+) -> Callable:
     """Times wrapped function and returns string formatted object.
 
     Args:
-        func (function): The function to be wrapped. (None if decorated)
+        func: The function to be wrapped. (None if decorated)
 
         disabled:        Disables timing of wrapped func.
 
@@ -58,12 +59,20 @@ def timed(
     if number < 1:
         raise ValueError("Argument number must be greater than 0.")
 
-    def deco_args_wrapper(f):
+    def deco_args_wrapper(f) -> Callable:
         if disabled:
             return f
 
-        @wraps(f)
-        def function_wrapper(*args, **kwargs) -> Result:
+        @wraps(
+            f,
+            assigned=(
+                "__module__",
+                "__name__",
+                "__qualname__",
+                "__doc__",
+            ),
+        )
+        def func_wrapper(*args, **kwargs) -> Result:
             with suppress_stdout(enable_stdout):
                 t, ret = timeit.timeit(
                     stmt=lambda: f(*args, **kwargs),
@@ -71,7 +80,7 @@ def timed(
                     number=number if not estimate else 1,
                 )
 
-            u_string = TimerResult(t * (number if estimate else (1 / number)), unit)
+            u_string = TimedResult(t * (number if estimate else (1 / number)), unit)
 
             if enable_return:
                 if ret is None:
@@ -81,9 +90,7 @@ def timed(
                 return u_string, ret
             return u_string
 
-        if hasattr(f, "__annotations__"):
-            f.__annotations__["return"] = Result
-        return function_wrapper
+        return func_wrapper
 
     if func is None:
         return deco_args_wrapper

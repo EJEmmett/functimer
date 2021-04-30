@@ -2,7 +2,7 @@ import sys
 from contextlib import contextmanager
 from typing import Union
 
-from functimer.classes import TimerResult, Unit, _unit_map
+from functimer.classes import TimedResult, Unit, _unit_map
 
 
 class DummyFile:
@@ -24,7 +24,7 @@ def suppress_stdout(enable_stdout: bool):
         yield
 
 
-def get_unit(fmt_str: Union[str, TimerResult]) -> Unit:
+def get_unit(fmt_str: Union[str, TimedResult]) -> Unit:
     """
     Parse unit from given string or returns the unit attribute from TimerResult object.
 
@@ -52,6 +52,6 @@ def get_unit(fmt_str: Union[str, TimerResult]) -> Unit:
         Unit.microsecond
     """
     # Convenience feature, can just access the unit member personally
-    if isinstance(fmt_str, TimerResult):
+    if isinstance(fmt_str, TimedResult):
         return fmt_str.unit
     return _unit_map[fmt_str[-2:]]
