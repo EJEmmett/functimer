@@ -45,7 +45,7 @@ class TimedResult:
         return self.value < other
 
     def __eq__(self, other):
-        return self.value < other
+        return self.value == other
 
 
 Result = Union[TimedResult, tuple[TimedResult, Any]]
