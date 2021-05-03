@@ -5,7 +5,7 @@ from typing import Callable
 from functimer.classes import Result, TimedResult, Unit
 from functimer.util import suppress_stdout
 
-timeit.template = """
+template = """
 def inner(_it, _timer{init}):
     {setup}
     _t0 = _timer()
@@ -72,6 +72,8 @@ def timed(
             ),
         )
         def func_wrapper(*args, **kwargs) -> Result:
+            if timeit.template != template:
+                timeit.template = template
             with suppress_stdout(enable_stdout):
                 t, ret = timeit.timeit(
                     stmt=lambda: f(*args, **kwargs),
