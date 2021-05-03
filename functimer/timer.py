@@ -53,7 +53,6 @@ def timed(
     Raises:
         ValueError:
             If number is less than zero.
-            If func returns none but enable_return is True.
     """
 
     if number < 1:
@@ -83,10 +82,6 @@ def timed(
             u_string = TimedResult(t * (number if estimate else (1 / number)), unit)
 
             if enable_return:
-                if ret is None:
-                    raise ValueError(
-                        f"{f.__qualname__} returns None but enable_return=True."
-                    )
                 return u_string, ret
             return u_string
 

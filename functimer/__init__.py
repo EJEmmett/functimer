@@ -1,4 +1,4 @@
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 
 from .classes import Unit
 from .timer import create_timed_function, timed
