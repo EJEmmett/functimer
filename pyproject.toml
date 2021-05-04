@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "functimer"
-version = "1.0.5"
+version = "1.0.6"
 description = "A decorator/wrapper package to time a given function."
 authors = ["Edward Emmett <edemms12@gmail.com>"]
 maintainers = ["Edward Emmett <edemms12@gmail.com>"]
@@ -23,7 +23,6 @@ packages = [{include = "functimer"}]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-numpy = "^1.20.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
