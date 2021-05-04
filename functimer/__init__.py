@@ -1,5 +1,3 @@
-__version__ = "1.0.4"
-
-from .classes import Unit
-from .timer import create_timed_function, timed
-from .util import get_unit
+from functimer.classes import Unit
+from functimer.timer import create_timed_function, timed
+from functimer.util import get_unit

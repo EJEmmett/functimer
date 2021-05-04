@@ -1,22 +1,63 @@
 [tool.poetry]
 name = "functimer"
-version = "1.0.4"
-description = "A function decorator/wrapper package to time a given function."
+version = "1.0.5"
+description = "A decorator/wrapper package to time a given function."
 authors = ["Edward Emmett <edemms12@gmail.com>"]
-repository = "https://github.com/EJEmmett/functimer"
+maintainers = ["Edward Emmett <edemms12@gmail.com>"]
+homepage="https://github.com/EJEmmett/functimer"
+repository = "https://github.com/EJEmmett/functimer.git"
 readme = "README.md"
 license = "MIT"
 
 keywords = ["timer", "timed", "timing", "function", "decorator"]
 
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+packages = [{include = "functimer"}]
+
 [tool.poetry.dependencies]
-python = "^3.6.2"
+python = "^3.7"
+numpy = "^1.20.2"
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.2.3"
+pytest = "*"
 black = "^21.4b2"
-isort = "^5.8.0"
-pre-commit = "^2.12.1"
+isort = "*"
+pre-commit = "*"
+FlakeHell = "*"
+flake8-bugbear = "*"
+
+[tool.black]
+line-length = 90
+target-version = ['py36']
+include = 'pyproject.toml'
+
+[tool.isort]
+line_length = 90
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+
+[tool.flakehell]
+max-line-length = 90
+max-complexity = 15
+hang-closing = true
+exclude = ["README.md"]
+extended_default_ignore=[]
+
+[tool.flakehell.plugins]
+pycodestyle = ["+*", "-E501"]
+pyflakes = ["+*", "-F401"]
+flake8-bugbear = ["+*"]
+pylint = ["+*"]
+mccabe = ["+*"]
 
 
 [build-system]

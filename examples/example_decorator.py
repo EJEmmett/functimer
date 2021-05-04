@@ -28,7 +28,7 @@ def estimate_func():
     sleep(2)
 
 
-@timed(disabled=True, enable_return=True)
+@timed(enabled=False, enable_return=True)
 def disabled_with_return():
     return True
 

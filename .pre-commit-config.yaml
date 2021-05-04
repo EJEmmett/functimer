@@ -4,6 +4,12 @@ repos:
     hooks:
       - id: black
 
+  - repo: https://github.com/myint/autoflake
+    rev: v1.4
+    hooks:
+      - id: autoflake
+        args: [ '--in-place', '--remove-all-unused-imports', '--remove-unused-variable', '--ignore-init-module-imports']
+
   - repo: https://github.com/timothycrosley/isort
     rev: 5.8.0
     hooks:
@@ -11,15 +17,25 @@ repos:
         additional_dependencies: [toml]
         exclude: ^.*/?setup\.py$
 
+  - repo: https://github.com/flakehell/flakehell
+    rev: v.0.8.0
+    hooks:
+      - id: flakehell
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.4.0
     hooks:
       - id: trailing-whitespace
-        exclude: |
-          (?x)(
-            ^tests/.*/fixtures/.*
-            | ^tests/console/commands/debug/test_resolve.py
-          )
       - id: end-of-file-fixer
-        exclude: ^tests/.*/fixtures/.*
-      - id: debug-statements
+      - id: check-docstring-first
+      - id: check-toml
+      - id: check-added-large-files
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: poetry run pytest
+        language: system
+        pass_filenames: false
+        always_run: true

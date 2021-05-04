@@ -19,7 +19,7 @@ def inner(_it, _timer{init}):
 def timed(
     func: Callable = None,
     *,
-    disabled: bool = False,
+    enabled: bool = True,
     unit: Unit = Unit.microsecond,
     enable_stdout: bool = False,
     enable_return: bool = False,
@@ -29,9 +29,9 @@ def timed(
     """Times wrapped function and returns string formatted object.
 
     Args:
-        func: The function to be wrapped. (None if decorated)
+        func:           The function to be wrapped. (None if decorated)
 
-        disabled:        Disables timing of wrapped func.
+        enabled:        Disables timing of wrapped func.
 
         unit:            The scientific unit to format runtime.
 
@@ -41,7 +41,7 @@ def timed(
         enable_return:   Whether to return the value from the function.
 
         estimate:        Toggle returning a rough estimation of total timer runtime over number
-                         executions.
+                         executions based on the runtime of one execution.
                          (Overhead of at least one execution)
 
         number:          Number of times to run function, higher values increase accuracy, but take
@@ -59,7 +59,7 @@ def timed(
         raise ValueError("Argument number must be greater than 0.")
 
     def deco_args_wrapper(f) -> Callable:
-        if disabled:
+        if not enabled:
             return f
 
         @wraps(

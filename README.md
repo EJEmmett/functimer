@@ -1,7 +1,10 @@
 # functimer
 
-A function decorator/wrapper package to time a given function.
+A decorator/wrapper package to time a given function.
 
+[![PyPI version](https://badge.fury.io/py/functimer.svg)](https://badge.fury.io/py/functimer)
+
+---
 ### Installation
 PYPI:
 
@@ -21,7 +24,8 @@ Comprehensive Examples in `examples`
 def timed_sleep(seconds):
     sleep(seconds)
 
-runtime = timed_sleep(0.3)
+runtime = timed_sleep(1)
+"1.00 s"
 ```
 
 ### Tests

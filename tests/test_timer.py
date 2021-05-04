@@ -12,7 +12,7 @@ def test_timed_base():
 
 
 def test_timed_disabled():
-    @timed(disabled=True)
+    @timed(enabled=False)
     def f():
         return 10
 
@@ -37,7 +37,7 @@ def test_timed_return():
 
 def test_timed_estimate():
     t = timed(sleep, estimate=True)
-    assert 95 < t(0.1) < 105
+    assert 50 < t(0.1) < 150
 
 
 def test_timed_wrapper():
