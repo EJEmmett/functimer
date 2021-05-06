@@ -15,7 +15,6 @@ repos:
     hooks:
       - id: isort
         additional_dependencies: [toml]
-        exclude: ^.*/?setup\.py$
 
   - repo: https://github.com/flakehell/flakehell
     rev: v.0.8.0
@@ -33,9 +32,9 @@ repos:
 
   - repo: local
     hooks:
-      - id: pytest
-        name: pytest
-        entry: poetry run pytest
+      - id: tox
+        name: tox
+        entry: poetry run tox
         language: system
         pass_filenames: false
         always_run: true

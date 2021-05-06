@@ -21,10 +21,10 @@ def timed(
     *,
     enabled: bool = True,
     unit: Unit = Unit.microsecond,
+    number: int = 1000,
+    estimate: bool = False,
     enable_stdout: bool = False,
     enable_return: bool = False,
-    estimate: bool = False,
-    number: int = 1000,
 ) -> Callable:
     """Times wrapped function and returns string formatted object.
 
@@ -35,17 +35,16 @@ def timed(
 
         unit:            The scientific unit to format runtime.
 
+        estimate:        Toggle returning a rough estimation of total timer runtime over number
+                         executions based on the runtime of one execution.
+
+        number:          Number of times to run function, higher values increase accuracy, but take
+                         longer.
+
         enable_stdout:   Whether to suppress writes to STDOUT.
                          (Suppressing STDOUT decreases runtime of function)
 
         enable_return:   Whether to return the value from the function.
-
-        estimate:        Toggle returning a rough estimation of total timer runtime over number
-                         executions based on the runtime of one execution.
-                         (Overhead of at least one execution)
-
-        number:          Number of times to run function, higher values increase accuracy, but take
-                         longer.
 
     Returns:
         function_wrapper: The wrapped function.

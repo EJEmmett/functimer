@@ -1,6 +1,6 @@
 from enum import Enum
 from functools import total_ordering
-from typing import Any, Union
+from typing import Any, Tuple, Union
 
 
 class Unit(Enum):
@@ -48,4 +48,4 @@ class TimedResult:
         return self.value == other
 
 
-Result = Union[TimedResult, tuple[TimedResult, Any]]
+Result = Union[TimedResult, Tuple[TimedResult, Any]]

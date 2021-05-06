@@ -18,7 +18,7 @@ def suppress_stdout():
     print("Hello")
 
 
-@timed(enable_stdout=True, number=1)
+@timed(number=1, enable_stdout=True)
 def enabled_stdout():
     print("Inside Timer")
 

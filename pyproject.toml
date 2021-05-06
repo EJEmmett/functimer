@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "functimer"
-version = "1.0.6"
+version = "1.0.7"
 description = "A decorator/wrapper package to time a given function."
 authors = ["Edward Emmett <edemms12@gmail.com>"]
 maintainers = ["Edward Emmett <edemms12@gmail.com>"]
@@ -19,18 +19,30 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-packages = [{include = "functimer"}]
+packages = [
+    {include = "functimer"},
+    {include = "tests"},
+    {include = "examples"}
+]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.6.1"
 
 [tool.poetry.dev-dependencies]
-pytest = "*"
-black = "^21.4b2"
-isort = "*"
-pre-commit = "*"
-FlakeHell = "*"
-flake8-bugbear = "*"
+pytest = "^6.2.4"
+black = [
+    {version = "21.5b0", python = "^3.6.2"},
+    {version = "*",      python = "^3.6"},
+]
+isort = "^5.8.0"
+pre-commit = [
+    {version = "2.12.1", python = "^3.6.1"},
+    {version = "*",      python = "^3.6"}
+]
+flakehell = "^0.9.0"
+flake8-bugbear = "^21.4.3"
+tox = "^3.23.1"
+
 
 [tool.black]
 line-length = 90
@@ -57,7 +69,6 @@ pyflakes = ["+*", "-F401"]
 flake8-bugbear = ["+*"]
 pylint = ["+*"]
 mccabe = ["+*"]
-
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
