@@ -8,6 +8,7 @@ before_install:
   - pip install poetry
 install:
   - pip install tox-travis
+  - poetry install
 script:
   - poetry run pre-commit run --all-files
   - tox
