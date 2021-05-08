@@ -29,7 +29,6 @@ packages = [
 python = "^3.6"
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.2.4"
 pre-commit = [
     {version = "2.12.1", python = "^3.6.1"},
     {version = "*",      python = "^3.6"}

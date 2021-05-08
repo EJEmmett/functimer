@@ -17,10 +17,11 @@ __pycache__/
 dist/
 /dist
 
-# Testing
+# Testing/Coverage
 .pytest_cache/
 tests/.pytest_cache
 /.tox/
+/.coverage
 
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow
 __pypackages__/
