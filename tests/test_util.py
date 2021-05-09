@@ -1,4 +1,4 @@
-from functimer import Unit, get_unit, timed
+from functimer import Unit, get_unit
 
 
 def test_get_unit_nano():
@@ -21,9 +21,5 @@ def test_get_unit_minute():
     assert get_unit("0.2 m") == Unit.minute
 
 
-def test_get_unit_func():
-    @timed(unit=Unit.millisecond)
-    def f():
-        return 10
-
-    assert get_unit(f()) == Unit.millisecond
+def test_get_unit_func(timed_unit):
+    assert get_unit(timed_unit()) == Unit.nanosecond

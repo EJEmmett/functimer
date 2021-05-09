@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "functimer"
-version = "1.0.9"
+version = "1.1.0"
 description = "A decorator/wrapper package to time a given function."
 authors = ["Edward Emmett <edemms12@gmail.com>"]
 maintainers = ["Edward Emmett <edemms12@gmail.com>"]
@@ -40,7 +40,6 @@ pytest = "^6.2.4"
 [tool.black]
 line-length = 90
 target-version = ["py36"]
-exclude = "tests/conftest.py"
 
 [tool.isort]
 line_length = 90
