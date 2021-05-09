@@ -28,3 +28,6 @@ __pypackages__/
 
 # Environments
 poetry.lock
+
+# Testing File
+/test.py
