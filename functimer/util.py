@@ -25,31 +25,13 @@ def suppress_stdout(enable_stdout: bool):
 
 
 def get_unit(fmt_str: Union[str, TimedResult]) -> Unit:
-    """
-    Parse unit from given string or returns the unit attribute from TimerResult object.
+    """Parse unit from given string or returns the unit attribute from TimerResult object.
 
-    Attributes:
+    Args:
         fmt_str: Given string or TimerResult Object
 
     Returns:
         Parsed unit enum.
-
-    example:
-        From a string\n
-        >>> str(get_unit("0.2 ms"))
-        Unit.microsecond
-
-        >>> str(get_unit("2.2 µs"))
-        Unit.millisecond
-
-        From func\n
-        >>> @timed
-        ... def f():
-        ...     return 1
-        ...
-        ... runtime = f()
-        ... str(get_unit(runtime))
-        Unit.microsecond
     """
     # Convenience feature, can just access the unit member personally
     if isinstance(fmt_str, TimedResult):

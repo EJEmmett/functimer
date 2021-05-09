@@ -25,7 +25,6 @@ class TimedResult:
     __slots__ = ["value", "unit", "precision"]
 
     def __init__(self, value: float, unit: Unit, precision: int = 2):
-        # Time in seconds
         self.value = value
         self.unit = unit
         self.precision = precision

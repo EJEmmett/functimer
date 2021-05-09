@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "functimer"
-version = "1.0.8"
+version = "1.0.9"
 description = "A decorator/wrapper package to time a given function."
 authors = ["Edward Emmett <edemms12@gmail.com>"]
 maintainers = ["Edward Emmett <edemms12@gmail.com>"]
