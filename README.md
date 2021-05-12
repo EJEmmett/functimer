@@ -43,17 +43,21 @@ How to install [Poetry](https://python-poetry.org/docs/#installation).
     $ python -m functimer "sum([1, 2, 3])"
     Average runtime of 10,000 executions: 0.15 µs
 
-    $ python -m functimer "sum([1, 2, 3])" --return True
+    $ python -m functimer "sum([1, 2, 3])" --return
     Average runtime of 10,000 executions: 0.15 µs
     sum([1, 2, 3]) -> 6
 
-    $ python -m functimer "(lambda x: x+x)(10)" --return true
+    $ python -m functimer "(lambda x: x+x)(10)" --return
     Average runtime of 10,000 executions: 0.14 µs
     (lambda x: x+x)(10) -> 20
 
-    $ python -m functimer "functimer.util.get_unit('1.00 s')" --return true
+    $ python -m functimer "functimer.util.get_unit('1.00 s')" --return
     Average runtime of 10,000 executions: 0.50 µs
     functimer.util.get_unit('1.00 s') -> Unit.second
+
+    $ python -m functimer "functimer.classes.Unit.from_str('s')" --return
+    Average runtime of 10,000 executions: 0.25 µs
+    functimer.classes.Unit.from_str('s') -> Unit.second
   ```
 
 ### Tests

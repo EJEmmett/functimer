@@ -31,5 +31,5 @@ __pypackages__/
 poetry.lock
 /venv/
 
-# Testing File
-/test.py
+# Testing Files
+/test/

@@ -38,8 +38,10 @@ def parse_for_method(module: str) -> Callable:
         method = getattr(builtins, module)
         return method
     except AttributeError:
-        submodules, method = module.rsplit(".", 1)
-        module = importlib.import_module(submodules)
+        module, *submodules, method = module.split(".")
+        module = importlib.import_module(module)
+        for submodule in submodules:
+            module = getattr(module, submodule)
         return getattr(module, method)
 
 
@@ -76,6 +78,21 @@ def cli():
     )
 
     parser.add_argument(
+        "-r",
+        "--return",
+        action="store_true",
+        dest="ret",
+        help="Output the return value of function.",
+    )
+
+    parser.add_argument(
+        "-e",
+        "--estimate",
+        action="store_true",
+        help="Roughly estimate the total time needed to time function over number of executions.",
+    )
+
+    parser.add_argument(
         "-u",
         "--unit",
         type=parse_unit,
@@ -85,31 +102,12 @@ def cli():
     )
 
     parser.add_argument(
-        "-e",
-        "--estimate",
-        metavar="bool",
-        type=bool,
-        default=False,
-        help="Roughly estimate the total time needed to time function over number of executions.",
-    )
-
-    parser.add_argument(
         "-n",
         "--number",
         metavar="int",
         type=parse_int,
         default=10_000,
         help="Set the number of times to execute.",
-    )
-
-    parser.add_argument(
-        "-r",
-        "--return",
-        metavar="bool",
-        type=bool,
-        default=False,
-        dest="ret",
-        help="Output the return value of function.",
     )
 
     args = parser.parse_args()

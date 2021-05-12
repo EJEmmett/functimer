@@ -2,6 +2,7 @@ import sys
 
 import pytest
 
+import functimer
 import functimer.__main__ as main
 from functimer import TimingException, Unit
 
@@ -71,11 +72,14 @@ def test_parse_func_exception(_input, error):
         ("(lambda x, y: x+y)(10, 22)", 32),
         ("(lambda x: sorted(x))([3,2,1])", [1, 2, 3]),
         ("(lambda x: x+x)(x=1)", 2),
+        ("functimer.classes.Unit.from_str('s')", Unit.second),
     ],
 )
-def test_exec_func(_input, expected):
-    runtime, ret = main.exec_func(_input)
-    assert ret == expected
+def test_exec_func(monkeypatch, _input, expected):
+    with monkeypatch.context() as m:
+        m.setattr(functimer.timer.timeit, "timeit", lambda *args, **kwargs: (1, expected))
+        runtime, ret = main.exec_func(_input)
+        assert ret == expected
 
 
 @pytest.mark.parametrize(
@@ -94,17 +98,19 @@ def test_exec_func_exception(_input, error):
     "_input, expected",
     [
         (["sum([1, 2, 3])"], "Average runtime of 10,000"),
-        (["-r", "true", "sum([1, 2, 3])"], "sum([1, 2, 3]) -> 6"),
-        (["-u", "ns", "sum([1, 2, 3])"], "ns"),
-        (["-n", "1,000", "sum([1, 2, 3])"], "1,000"),
-        (["-e", "true", "sum([1, 2, 3])"], "Estimated"),
+        (["sum([1, 2, 3])", "-r"], "sum([1, 2, 3]) -> 6"),
+        (["sum([1, 2, 3])", "-e"], "Estimated"),
+        (["sum([1, 2, 3])", "-u", "ns"], "ns"),
+        (["sum([1, 2, 3])", "-n", "1,000"], "1,000"),
     ],
 )
-def test_cli(capsys, _input, expected):
+def test_cli(monkeypatch, capsys, _input, expected):
     sys.argv[1:] = _input
-    main.cli()
-    out = capsys.readouterr().out
-    assert expected in out
+    with monkeypatch.context() as m:
+        m.setattr(functimer.timer.timeit, "timeit", lambda *args, **kwargs: (1, 6))
+        main.cli()
+        out = capsys.readouterr().out
+        assert expected in out
 
 
 @pytest.mark.parametrize(
