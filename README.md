@@ -28,7 +28,7 @@ How to install [Poetry](https://python-poetry.org/docs/#installation).
 ## Quick Example
 ### Comprehensive Examples in `examples`
 
-From Python
+- Python
   ```py
       @timed(unit=Unit.second, number=1)
       def timed_sleep(seconds):
@@ -38,7 +38,7 @@ From Python
       "1.00 s"
   ```
 
-From the command line
+- Command Line
   ```shell
     $ python -m functimer "sum([1, 2, 3])"
     Average runtime of 10,000 executions: 0.15 µs
