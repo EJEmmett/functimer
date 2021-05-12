@@ -6,6 +6,7 @@ import sys
 from typing import Callable, Dict, Tuple
 
 from functimer import TimingException, Unit, timed
+from functimer.classes import TimedResult
 
 unit_map: Dict[str, Unit] = {
     "ns": Unit.nanosecond,
@@ -49,15 +50,15 @@ def parse_func(func: str) -> Tuple[Callable, str]:
     if "(" not in func and ")" not in func:
         raise TimingException("Malformed input.")
     if not func.startswith("(lambda"):
-        method, args = re.findall(RE_FUNCTION, func)[0]
-        method = parse_for_method(method)
+        func, args = re.findall(RE_FUNCTION, func)[0]
+        method = parse_for_method(func)
     else:
-        method, args = re.findall(RE_LAMBDA, func)[0]
-        method = eval(method)
+        lmbda, args = re.findall(RE_LAMBDA, func)[0]
+        method = eval(lmbda)
     return method, args
 
 
-def exec_func(func: str, **kwargs):
+def exec_func(func: str, **kwargs) -> TimedResult:
     f, args = parse_func(func)
     timed_f = timed(f, **kwargs, enable_return=True)  # NOQA
     return eval(f"timed_f({args})")
