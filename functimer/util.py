@@ -2,24 +2,35 @@ import sys
 from contextlib import contextmanager
 from typing import Union
 
-from functimer.classes import TimedResult, Unit, _unit_map
+from functimer.classes import TimedResult, Unit
+from functimer.exceptions import TimingException
 
 
-class DummyFile:
-    def write(self, x):
+class TrapIO:
+    def write(self, *args):
         pass
 
     def flush(self):
         pass
+
+    def read(self, *args):
+        raise TimingException("Can't read from stdin while timing!")
+
+    readline = read
+    readlines = read
+    __next__ = read
 
 
 @contextmanager
 def suppress_stdout(enable_stdout: bool):
     if not enable_stdout:
         save_stdout = sys.stdout
-        sys.stdout = DummyFile()
+        save_stdin = sys.stdin
+        sys.stdout = TrapIO()
+        sys.stdin = TrapIO()
         yield
         sys.stdout = save_stdout
+        sys.stdin = save_stdin
     else:
         yield
 
@@ -36,4 +47,4 @@ def get_unit(fmt_str: Union[str, TimedResult]) -> Unit:
     # Convenience feature, can just access the unit member personally
     if isinstance(fmt_str, TimedResult):
         return fmt_str.unit
-    return _unit_map[fmt_str[-2:]]
+    return Unit.from_str(fmt_str[-2:].strip())

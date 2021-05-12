@@ -2,6 +2,8 @@ from enum import Enum
 from functools import total_ordering
 from typing import Any, Tuple, Union
 
+from functimer.exceptions import TimingException
+
 
 class Unit(Enum):
     nanosecond = "ns", 1e9
@@ -10,13 +12,30 @@ class Unit(Enum):
     second = "s", 1
     minute = "m", 1 / 60
 
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return f"{self.__class__.__qualname__}.{self.name}"
+
+    @staticmethod
+    def from_str(s):
+        s = s.lower()
+        try:
+            return _unit_map[s]
+        except KeyError:
+            try:
+                return Unit[s]
+            except KeyError:
+                raise TimingException(f"'{s}' is not a valid Unit.") from None
+
 
 _unit_map = {
     "ns": Unit.nanosecond,
     "µs": Unit.microsecond,
     "ms": Unit.millisecond,
-    " s": Unit.second,
-    " m": Unit.minute,
+    "s": Unit.second,
+    "m": Unit.minute,
 }
 
 
@@ -37,7 +56,7 @@ class TimedResult:
     def __repr__(self):
         return (
             f"<{self.__class__.__module__}.{self.__class__.__qualname__}"
-            f"({', '.join(f'{slot}: {getattr(self, slot)}' for slot in self.__slots__)})>"
+            f"({', '.join(f'{slot}: {repr(getattr(self, slot))}' for slot in self.__slots__)})>"
         )
 
     def __lt__(self, other):
