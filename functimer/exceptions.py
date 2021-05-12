@@ -1,0 +1,2 @@
+class TimingException(BaseException):
+    pass

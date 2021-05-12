@@ -1,3 +1,19 @@
+import pytest
+
+from functimer import Unit
+from functimer.classes import TimedResult
+
+
+@pytest.fixture
+def timed_result_micro():
+    return TimedResult(1e-6, Unit.microsecond)
+
+
+@pytest.fixture
+def timed_result_milli():
+    return TimedResult(1e-3, Unit.millisecond)
+
+
 def test_timed_result_eq(timed_result_micro):
     t1 = timed_result_micro
     t2 = timed_result_micro

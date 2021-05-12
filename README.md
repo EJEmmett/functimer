@@ -26,15 +26,35 @@ A decorator/wrapper package to time a given function.
 How to install [Poetry](https://python-poetry.org/docs/#installation).
 
 ## Quick Example
-Comprehensive Examples in `examples`
-```py
-    @timed(unit=Unit.second, number=1)
-    def timed_sleep(seconds):
-        sleep(seconds)
+### Comprehensive Examples in `examples`
 
-    runtime = timed_sleep(1)
-    "1.00 s"
-```
+From Python
+  ```py
+      @timed(unit=Unit.second, number=1)
+      def timed_sleep(seconds):
+          sleep(seconds)
+
+      runtime = timed_sleep(1)
+      "1.00 s"
+  ```
+
+From the command line
+  ```shell
+    $ python -m functimer "sum([1, 2, 3])"
+    Average runtime of 10,000 executions: 0.15 µs
+
+    $ python -m functimer "sum([1, 2, 3])" --return True
+    Average runtime of 10,000 executions: 0.15 µs
+    sum([1, 2, 3]) -> 6
+
+    $ python -m functimer "(lambda x: x+x)(10)" --return true
+    Average runtime of 10,000 executions: 0.14 µs
+    (lambda x: x+x)(10) -> 20
+
+    $ python -m functimer "functimer.util.get_unit('1.00 s')" --return true
+    Average runtime of 10,000 executions: 0.50 µs
+    functimer.util.get_unit('1.00 s') -> Unit.second
+  ```
 
 ### Tests
 Run `tox` in the root directory of the repo.
