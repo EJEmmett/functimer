@@ -32,4 +32,4 @@ poetry.lock
 /venv/
 
 # Testing Files
-/test/
+/testing/

@@ -1,9 +1,11 @@
 import argparse
 import builtins
-import importlib
-import re
 import sys
-from typing import Callable, Dict, Tuple
+from contextlib import contextmanager
+from importlib import import_module
+from re import findall, sub
+from types import FunctionType, ModuleType
+from typing import Dict, Union
 
 from functimer import TimingException, Unit, timed
 from functimer.classes import TimedResult
@@ -16,8 +18,8 @@ unit_map: Dict[str, Unit] = {
     "m": Unit.minute,
 }
 
+RE_ARGS = r"\((.*?)\)"
 RE_LAMBDA = r"\((.*)\)\s*\((.*)\)"
-RE_FUNCTION = r"(.*)\s*\((.*)\)"
 
 
 def parse_unit(s: str) -> Unit:
@@ -34,34 +36,38 @@ def parse_int(s: str) -> int:
     return int(s.replace(",", ""))
 
 
-def parse_for_method(module: str) -> Callable:
+@contextmanager
+def create_local(func_chain: str, **kwargs) -> Dict[str, Union[ModuleType, FunctionType]]:
     try:
-        method = getattr(builtins, module)
-        return method
+        method = getattr(builtins, func_chain)
+        local = {method.__name__: timed(method, **kwargs, enable_return=True)}
+        print(type(local[method.__name__]))
+        yield local
     except AttributeError:
-        module, *submodules, method = module.split(".")
-        module = importlib.import_module(module)
-        for submodule in submodules:
+        module, *subattrs, method = func_chain.split(".")
+        module = import_module(module)
+        local = {module.__name__: module}
+        for submodule in subattrs:
             module = getattr(module, submodule)
-        return getattr(module, method)
-
-
-def parse_func(func: str) -> Tuple[Callable, str]:
-    if "(" not in func and ")" not in func:
-        raise TimingException("Malformed input.")
-    if not func.startswith("(lambda"):
-        func, args = re.findall(RE_FUNCTION, func)[0]
-        method = parse_for_method(func)
-    else:
-        lmbda, args = re.findall(RE_LAMBDA, func)[0]
-        method = eval(lmbda)
-    return method, args
+        store_method = getattr(module, method)
+        setattr(module, method, timed(store_method, **kwargs, enable_return=True))
+        yield local
+        setattr(module, method, store_method)
 
 
 def exec_func(func: str, **kwargs) -> TimedResult:
-    f, args = parse_func(func)
-    timed_f = timed(f, **kwargs, enable_return=True)  # NOQA
-    return eval(f"timed_f({args})")
+    if "(" not in func and ")" not in func:
+        raise TimingException("Malformed input.")
+
+    if not func.startswith("(lambda"):
+        func_chain = sub(RE_ARGS, "", func)
+        with create_local(func_chain, **kwargs) as local:
+            return eval(func, globals(), local)
+    else:
+        lamb, args = findall(RE_LAMBDA, func)[0]
+        lamb = eval(lamb)
+        timed_f = timed(lamb, **kwargs, enable_return=True)  # NOQA
+        return eval(f"timed_f({args})")
 
 
 def cli():

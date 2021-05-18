@@ -11,55 +11,27 @@ from functimer import TimingException, Unit
     "_input, expected",
     [
         ("sum", "sum"),
-        ("math.sqrt", "sqrt"),
-        ("functimer.util.get_unit", "get_unit"),
+        ("math.sqrt", "math"),
+        ("functimer.util.get_unit", "functimer"),
     ],
 )
-def test_parse_for_method(_input, expected):
-    module = main.parse_for_method(_input)
-    assert module.__qualname__ == expected
-
-
-@pytest.mark.parametrize(
-    "_input, error",
-    [
-        ("malformed input", ValueError),
-        ("package.subpackage", ModuleNotFoundError),
-    ],
-)
-def test_parse_for_method_exception(_input, error):
-    with pytest.raises(error):
-        main.parse_for_method(_input)
-
-
-@pytest.mark.parametrize(
-    "_input, expected_f, expected_a",
-    [
-        ("sum([1, 2, 3])", "sum", "[1, 2, 3]"),
-        ("math.sqrt(4)", "sqrt", "4"),
-        ("functimer.util.get_unit('1.00 s')", "get_unit", "'1.00 s'"),
-        ("(lambda x: x+x)(10)", "<lambda>", "10"),
-        ("(lambda x, y: x+y)(10, 22)", "<lambda>", "10, 22"),
-        ("(lambda x: x.sort())([1,2,3])", "<lambda>", "[1,2,3]"),
-        ("(lambda x: x+x)(x=1)", "<lambda>", "x=1"),
-    ],
-)
-def test_parse_func(_input, expected_f, expected_a):
-    func, args = main.parse_func(_input)
-    assert func.__qualname__ == expected_f
-    assert args == expected_a
+def test_create_local(_input, expected):
+    with main.create_local(_input, **{}) as local:
+        assert list(local.keys())[0] == expected
 
 
 @pytest.mark.parametrize(
     "_input, error",
     [
         ("func(1, 2, 3)", ValueError),
-        ("package.subpackage.method('test')", ModuleNotFoundError),
+        ("malformed input", TimingException),
+        ("package.subpackage.method('testing')", ModuleNotFoundError),
+        ("package.subpackage", TimingException),
     ],
 )
-def test_parse_func_exception(_input, error):
+def test_exec_func_exception(_input, error):
     with pytest.raises(error):
-        main.parse_func(_input)
+        main.exec_func(_input, **{})
 
 
 @pytest.mark.parametrize(
@@ -73,6 +45,7 @@ def test_parse_func_exception(_input, error):
         ("(lambda x: sorted(x))([3,2,1])", [1, 2, 3]),
         ("(lambda x: x+x)(x=1)", 2),
         ("functimer.classes.Unit.from_str('s')", Unit.second),
+        ("tests.Test(1, 2).mult()", 2),
     ],
 )
 def test_exec_func(monkeypatch, _input, expected):
@@ -89,7 +62,7 @@ def test_exec_func(monkeypatch, _input, expected):
         ("functimer.util.get_unit('invalid')", TimingException),
     ],
 )
-def test_exec_func_exception(_input, error):
+def test_exec_func_inner_exception(_input, error):
     with pytest.raises(error):
         main.exec_func(_input)
 

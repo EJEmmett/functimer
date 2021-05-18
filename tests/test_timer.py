@@ -15,10 +15,9 @@ def func_input():
 
 @pytest.fixture
 def mock_timed(monkeypatch):
-    monkeypatch.setattr(
-        functimer.timer.timeit, "timeit", lambda *args, **kwargs: (1, func())
-    )
-    return functimer.timed
+    with monkeypatch.context() as m:
+        m.setattr(functimer.timer.timeit, "timeit", lambda *args, **kwargs: (1, func()))
+        yield functimer.timed
 
 
 @pytest.mark.parametrize(
