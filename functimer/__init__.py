@@ -4,5 +4,5 @@ __all__ = ["create_timed_function", "get_unit", "timed", "TimingException", "Uni
 
 from functimer.classes import Unit
 from functimer.exceptions import TimingException
-from functimer.timer import create_timed_function, timed
+from functimer.functimer import create_timed_function, timed
 from functimer.util import get_unit
