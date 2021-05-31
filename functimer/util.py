@@ -14,7 +14,7 @@ class TrapIO:
         pass
 
     def read(self, *args):
-        raise TimingException("Can't read from stdin while timing!")
+        raise TimingException("Can't read from stdin while timing!") from None
 
     readline = read
     readlines = read

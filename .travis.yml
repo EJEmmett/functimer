@@ -6,9 +6,9 @@ python:
   - "3.9"
 before_install:
   - pip install poetry
-install:
   - pip install tox-travis
   - pip install codecov
+install:
   - poetry install
 script:
   - poetry run pre-commit run --all-files

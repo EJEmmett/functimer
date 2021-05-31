@@ -50,7 +50,9 @@ def test_exec_func_exception(_input, error):
 )
 def test_exec_func(monkeypatch, _input, expected):
     with monkeypatch.context() as m:
-        m.setattr(functimer.timer.timeit, "timeit", lambda *args, **kwargs: (1, expected))
+        m.setattr(
+            functimer.functimer.timeit, "timeit", lambda *args, **kwargs: (1, expected)
+        )
         runtime, ret = main.exec_func(_input)
         assert ret == expected
 
@@ -80,7 +82,7 @@ def test_exec_func_inner_exception(_input, error):
 def test_cli(monkeypatch, capsys, _input, expected):
     sys.argv[1:] = _input
     with monkeypatch.context() as m:
-        m.setattr(functimer.timer.timeit, "timeit", lambda *args, **kwargs: (1, 6))
+        m.setattr(functimer.functimer.timeit, "timeit", lambda *args, **kwargs: (1, 6))
         main.cli()
         out = capsys.readouterr().out
         assert expected in out

@@ -29,11 +29,11 @@ def timed(
     """Times wrapped function and returns string formatted object.
 
     Args:
-        func:           The function to be wrapped. (None if decorated)
+        func:            The function to be wrapped. (None if decorated)
 
-        enabled:        Disables timing of wrapped func.
+        enabled:         Disables timing of wrapped func.
 
-        unit:            The scientific unit to format runtime.
+        unit:            The scientific unit to format the returned value.
 
         estimate:        Toggle returning a rough estimation of total timer runtime over number
                          executions based on the runtime of one execution.
@@ -51,7 +51,7 @@ def timed(
 
     Raises:
         ValueError:
-            If number is less than zero.
+            If number is less than one.
     """
 
     if number < 1:

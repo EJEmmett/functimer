@@ -1,6 +1,6 @@
-import argparse
 import builtins
 import sys
+from argparse import ArgumentParser, RawTextHelpFormatter
 from contextlib import contextmanager
 from importlib import import_module
 from re import findall, sub
@@ -8,7 +8,7 @@ from types import FunctionType, ModuleType
 from typing import Dict, Union
 
 from functimer import TimingException, Unit, timed
-from functimer.classes import TimedResult
+from functimer.classes import Result
 
 unit_map: Dict[str, Unit] = {
     "ns": Unit.nanosecond,
@@ -41,7 +41,6 @@ def create_local(func_chain: str, **kwargs) -> Dict[str, Union[ModuleType, Funct
     try:
         method = getattr(builtins, func_chain)
         local = {method.__name__: timed(method, **kwargs, enable_return=True)}
-        print(type(local[method.__name__]))
         yield local
     except AttributeError:
         module, *subattrs, method = func_chain.split(".")
@@ -55,7 +54,7 @@ def create_local(func_chain: str, **kwargs) -> Dict[str, Union[ModuleType, Funct
         setattr(module, method, store_method)
 
 
-def exec_func(func: str, **kwargs) -> TimedResult:
+def exec_func(func: str, **kwargs) -> Result:
     if "(" not in func and ")" not in func:
         raise TimingException("Malformed input.")
 
@@ -71,10 +70,10 @@ def exec_func(func: str, **kwargs) -> TimedResult:
 
 
 def cli():
-    parser = argparse.ArgumentParser(
+    parser = ArgumentParser(
         prog="functimer",
         description="A decorator/wrapper package to time a given function.",
-        formatter_class=argparse.RawTextHelpFormatter,
+        formatter_class=RawTextHelpFormatter,
     )
 
     parser.add_argument(
@@ -104,7 +103,7 @@ def cli():
         "--unit",
         type=parse_unit,
         default=Unit.microsecond,
-        help=f"Set the resulting unit, defaults to microsecond."
+        help=f"Set the resulting unit, defaults to microsecond. "
         f"({', '.join(list(unit_map.keys()))})",
     )
 

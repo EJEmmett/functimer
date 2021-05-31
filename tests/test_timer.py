@@ -16,7 +16,9 @@ def func_input():
 @pytest.fixture
 def mock_timed(monkeypatch):
     with monkeypatch.context() as m:
-        m.setattr(functimer.timer.timeit, "timeit", lambda *args, **kwargs: (1, func()))
+        m.setattr(
+            functimer.functimer.timeit, "timeit", lambda *args, **kwargs: (1, func())
+        )
         yield functimer.timed
 
 
@@ -31,6 +33,7 @@ def mock_timed(monkeypatch):
     ],
 )
 def test_timed(mock_timed, kwargs, expected):
+    print(mock_timed(func, **kwargs)())
     assert str(expected) in str(mock_timed(func, **kwargs)())
 
 
@@ -51,7 +54,9 @@ def test_timed_stdout(capsys, mock_timed):
 def test_timed_error(monkeypatch, _input, kwargs, error):
     with monkeypatch.context() as m:
         m.setattr(
-            functimer.timer.timeit, "timeit", lambda *args, **kwargs: (1, func_input())
+            functimer.functimer.timeit,
+            "timeit",
+            lambda *args, **kwargs: (1, func_input()),
         )
         with pytest.raises(error):
             functimer.timed(_input, **kwargs)()
