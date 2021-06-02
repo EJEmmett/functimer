@@ -30,7 +30,7 @@ How to install [Poetry](https://python-poetry.org/docs/#installation).
 
 - Python
   ```py
-      @timed(unit=Unit.second, number=1)
+      @timed(unit=Unit.SECOND, number=1)
       def timed_sleep(seconds):
           sleep(seconds)
 
@@ -53,11 +53,11 @@ How to install [Poetry](https://python-poetry.org/docs/#installation).
 
     $ python -m functimer "functimer.util.get_unit('1.00 s')" --return
     Average runtime of 10,000 executions: 0.50 µs
-    functimer.util.get_unit('1.00 s') -> Unit.second
+    functimer.util.get_unit('1.00 s') -> Unit.SECOND
 
     $ python -m functimer "functimer.classes.Unit.from_str('s')" --return
     Average runtime of 10,000 executions: 0.25 µs
-    functimer.classes.Unit.from_str('s') -> Unit.second
+    functimer.classes.Unit.from_str('s') -> Unit.SECOND
   ```
 
 ### Tests

@@ -30,11 +30,11 @@ python = "^3.6"
 
 [tool.poetry.dev-dependencies]
 pre-commit = [
-    {version = "2.13.0", python = "^3.6.1"},
+    {version = "^2.13.0", python = "^3.6.1"},
     {version = "*",      python = "^3.6"}
 ]
 tox = "^3.23.1"
-pytest-cov = "^2.12.0"
+pytest-cov = "^2.12.1"
 
 
 [tool.black]
@@ -48,18 +48,11 @@ include_trailing_comma = true
 force_grid_wrap = 0
 use_parentheses = true
 
-[tool.flakehell]
+[tool.flake8]
 max-line-length = 90
-max-complexity = 15
+max-complexity = 10
 hang-closing = true
-extended_default_ignore=[]
-
-[tool.flakehell.plugins]
-pycodestyle = ["+*", "-E501", "-W503"]
-pyflakes = ["+*", "-F401"]
-flake8-bugbear = ["+*"]
-pylint = ["+*"]
-mccabe = ["+*"]
+ignore = "E501, W503, F401"
 
 
 [build-system]
