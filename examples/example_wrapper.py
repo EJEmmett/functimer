@@ -12,7 +12,7 @@ def return_func():
 
 
 if __name__ == "__main__":
-    sleep_func = timed(sleep_func, unit=Unit.second, number=1)
+    sleep_func = timed(sleep_func, unit=Unit.SECOND, number=1)
     runtime = sleep_func()
     print("Runtime of sleep_func:", runtime)
     print()

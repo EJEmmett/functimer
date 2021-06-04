@@ -6,36 +6,35 @@ from functimer.exceptions import TimingException
 
 
 class Unit(Enum):
-    nanosecond = "ns", 1e9
-    microsecond = "µs", 1e6
-    millisecond = "ms", 1e3
-    second = "s", 1
-    minute = "m", 1 / 60
+    NANOSECOND = "ns", 1e9
+    MICROSECOND = "µs", 1e6
+    MILLISECOND = "ms", 1e3
+    SECOND = "s", 1
+    MINUTE = "m", 1 / 60
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.__class__.__qualname__}.{self.name}"
 
     @staticmethod
-    def from_str(s):
-        s = s.lower()
+    def from_str(string: str) -> "Unit":
         try:
-            return _unit_map[s]
+            return _unit_map[string.lower()]
         except KeyError:
             try:
-                return Unit[s]
+                return Unit[string.upper()]
             except KeyError:
-                raise TimingException(f"'{s}' is not a valid Unit.") from None
+                raise TimingException(f"'{string}' is not a valid Unit.") from None
 
 
 _unit_map = {
-    "ns": Unit.nanosecond,
-    "µs": Unit.microsecond,
-    "ms": Unit.millisecond,
-    "s": Unit.second,
-    "m": Unit.minute,
+    "ns": Unit.NANOSECOND,
+    "µs": Unit.MICROSECOND,
+    "ms": Unit.MILLISECOND,
+    "s": Unit.SECOND,
+    "m": Unit.MINUTE,
 }
 
 

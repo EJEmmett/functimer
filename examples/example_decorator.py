@@ -3,7 +3,7 @@ from time import sleep
 from functimer import Unit, timed
 
 
-@timed(unit=Unit.second, number=1)
+@timed(unit=Unit.SECOND, number=1)
 def timed_sleep(seconds):
     sleep(seconds)
 
@@ -23,7 +23,7 @@ def enabled_stdout():
     print("Inside Timer")
 
 
-@timed(unit=Unit.minute, estimate=True)
+@timed(unit=Unit.MINUTE, estimate=True)
 def estimate_func():
     sleep(2)
 

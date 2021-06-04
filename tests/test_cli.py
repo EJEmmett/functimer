@@ -39,12 +39,12 @@ def test_exec_func_exception(_input, error):
     [
         ("sum([1, 2, 3])", 6),
         ("math.sqrt(4)", 2.0),
-        ("functimer.util.get_unit('1.00 s')", Unit.second),
+        ("functimer.util.get_unit('1.00 s')", Unit.SECOND),
         ("(lambda x: x+x)(10)", 20),
         ("(lambda x, y: x+y)(10, 22)", 32),
         ("(lambda x: sorted(x))([3,2,1])", [1, 2, 3]),
         ("(lambda x: x+x)(x=1)", 2),
-        ("functimer.classes.Unit.from_str('s')", Unit.second),
+        ("functimer.classes.Unit.from_str('s')", Unit.SECOND),
         ("tests.Test(1, 2).mult()", 2),
     ],
 )

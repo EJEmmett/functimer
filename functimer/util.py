@@ -35,16 +35,16 @@ def suppress_stdout(enable_stdout: bool):
         yield
 
 
-def get_unit(fmt_str: Union[str, TimedResult]) -> Unit:
+def get_unit(string: Union[str, TimedResult]) -> Unit:
     """Parse unit from given string or returns the unit attribute from TimerResult object.
 
     Args:
-        fmt_str: Given string or TimerResult Object
+        string: Given string or TimerResult Object
 
     Returns:
-        Parsed unit enum.
+        Parsed Unit enum.
     """
     # Convenience feature, can just access the unit member personally
-    if isinstance(fmt_str, TimedResult):
-        return fmt_str.unit
-    return Unit.from_str(fmt_str[-2:].strip())
+    if isinstance(string, TimedResult):
+        return string.unit
+    return Unit.from_str(string[-2:].strip())

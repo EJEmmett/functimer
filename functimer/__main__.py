@@ -11,29 +11,25 @@ from functimer import TimingException, Unit, timed
 from functimer.classes import Result
 
 unit_map: Dict[str, Unit] = {
-    "ns": Unit.nanosecond,
-    "ms": Unit.microsecond,
-    "Ms": Unit.millisecond,
-    "s": Unit.second,
-    "m": Unit.minute,
+    "ns": Unit.NANOSECOND,
+    "ms": Unit.MICROSECOND,
+    "Ms": Unit.MILLISECOND,
+    "s": Unit.SECOND,
+    "m": Unit.MINUTE,
 }
 
 RE_ARGS = r"\((.*?)\)"
 RE_LAMBDA = r"\((.*)\)\s*\((.*)\)"
 
 
-def parse_unit(s: str) -> Unit:
+def parse_unit(string: str) -> Unit:
     try:
-        return unit_map[s]
+        return unit_map[string]
     except KeyError:
         try:
-            return Unit[s]
+            return Unit[string]
         except KeyError:
             raise ValueError()
-
-
-def parse_int(s: str) -> int:
-    return int(s.replace(",", ""))
 
 
 @contextmanager
@@ -102,7 +98,7 @@ def cli():
         "-u",
         "--unit",
         type=parse_unit,
-        default=Unit.microsecond,
+        default=Unit.MICROSECOND,
         help=f"Set the resulting unit, defaults to microsecond. "
         f"({', '.join(list(unit_map.keys()))})",
     )
@@ -111,7 +107,7 @@ def cli():
         "-n",
         "--number",
         metavar="int",
-        type=parse_int,
+        type=lambda s: int(s.replace(",", "")),
         default=10_000,
         help="Set the number of times to execute.",
     )
@@ -123,7 +119,8 @@ def cli():
     )
 
     print(
-        f"{'Average' if not args.estimate else 'Estimated'} runtime of {args.number:,} executions: {runtime}"
+        f"{'Average' if not args.estimate else 'Estimated'} "
+        f"runtime of {args.number:,} executions: {runtime}"
     )
     if args.ret:
         print(f"{args.func} -> {repr(ret)}")

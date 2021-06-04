@@ -5,7 +5,7 @@ from typing import Callable
 from functimer.classes import Result, TimedResult, Unit
 from functimer.util import suppress_stdout
 
-template = """
+TEMPLATE = """
 def inner(_it, _timer{init}):
     {setup}
     _t0 = _timer()
@@ -20,7 +20,7 @@ def timed(
     func: Callable = None,
     *,
     enabled: bool = True,
-    unit: Unit = Unit.microsecond,
+    unit: Unit = Unit.MICROSECOND,
     number: int = 1000,
     estimate: bool = False,
     enable_return: bool = False,
@@ -57,12 +57,12 @@ def timed(
     if number < 1:
         raise ValueError("Argument number must be greater than 0.")
 
-    def deco_args_wrapper(f) -> Callable:
+    def deco_args_wrapper(func: Callable) -> Callable:
         if not enabled:
-            return f
+            return func
 
         @wraps(
-            f,
+            func,
             assigned=(
                 "__module__",
                 "__name__",
@@ -71,20 +71,22 @@ def timed(
             ),
         )
         def func_wrapper(*args, **kwargs) -> Result:
-            if timeit.template != template:
-                timeit.template = template
+            if timeit.template != TEMPLATE:
+                timeit.template = TEMPLATE
             with suppress_stdout(enable_stdout):
-                t, ret = timeit.timeit(
-                    stmt=lambda: f(*args, **kwargs),
-                    globals=f.__globals__ if hasattr(f, "__globals__") else None,
-                    number=number if not estimate else 1,
+                total_time, ret = timeit.timeit(
+                    stmt=lambda: func(*args, **kwargs),
+                    globals=func.__globals__ if hasattr(func, "__globals__") else None,
+                    number=1 if estimate else number,
                 )
 
-            u_string = TimedResult(t * (number if estimate else (1 / number)), unit)
+            timed_result = TimedResult(
+                total_time * (number if estimate else (1 / number)), unit
+            )
 
             if enable_return:
-                return u_string, ret
-            return u_string
+                return timed_result, ret
+            return timed_result
 
         return func_wrapper
 

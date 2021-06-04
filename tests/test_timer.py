@@ -27,8 +27,8 @@ def mock_timed(monkeypatch):
     [
         ({}, "1000.00 µs"),
         ({"enabled": False}, 10),
-        ({"unit": functimer.Unit.nanosecond}, "ns"),
-        ({"estimate": True, "unit": functimer.Unit.second}, 1e3),
+        ({"unit": functimer.Unit.NANOSECOND}, "ns"),
+        ({"estimate": True, "unit": functimer.Unit.SECOND}, 1e3),
         ({"enable_return": True}, 10),
     ],
 )

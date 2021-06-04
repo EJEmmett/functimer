@@ -6,12 +6,12 @@ from functimer.classes import TimedResult
 
 @pytest.fixture
 def timed_result_micro():
-    return TimedResult(1e-6, Unit.microsecond)
+    return TimedResult(1e-6, Unit.MICROSECOND)
 
 
 @pytest.fixture
 def timed_result_milli():
-    return TimedResult(1e-3, Unit.millisecond)
+    return TimedResult(1e-3, Unit.MILLISECOND)
 
 
 def test_timed_result_eq(timed_result_micro):
@@ -40,10 +40,10 @@ def test_timed_result_repr(timed_result_micro, timed_result_milli):
 
     assert (
         repr(t1)
-        == "<functimer.classes.TimedResult(value: 1e-06, unit: Unit.microsecond, precision: 2)>"
+        == "<functimer.classes.TimedResult(value: 1e-06, unit: Unit.MICROSECOND, precision: 2)>"
     )
 
     assert (
         repr(t2)
-        == "<functimer.classes.TimedResult(value: 0.001, unit: Unit.millisecond, precision: 2)>"
+        == "<functimer.classes.TimedResult(value: 0.001, unit: Unit.MILLISECOND, precision: 2)>"
     )

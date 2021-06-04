@@ -34,8 +34,10 @@ pre-commit = [
     {version = "*",      python = "^3.6"}
 ]
 tox = "^3.23.1"
-pytest-cov = "^2.12.1"
+pytest = "^6.2.4"
 
+[tool.poetry.extras]
+tests = ["pytest"]
 
 [tool.black]
 line-length = 90
@@ -51,8 +53,13 @@ use_parentheses = true
 [tool.flake8]
 max-line-length = 90
 max-complexity = 10
-hang-closing = true
-ignore = "E501, W503, F401"
+# E501:
+# W503:
+ignore = "E501, W503"
+# F401:
+# PLW0123:
+# T001: print found.
+per-file-ignores = "functimer/__init__.py: F401, functimer/__main__.py:PLW0123, T001"
 
 
 [build-system]
