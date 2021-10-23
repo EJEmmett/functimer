@@ -2,7 +2,7 @@ import timeit
 from functools import wraps
 from typing import Callable
 
-from functimer.classes import Result, TimedResult, Unit
+from functimer.classes import Result, TResult, Unit
 from functimer.util import suppress_stdout
 
 TEMPLATE = """
@@ -57,12 +57,12 @@ def timed(
     if number < 1:
         raise ValueError("Argument number must be greater than 0.")
 
-    def deco_args_wrapper(func: Callable) -> Callable:
+    def deco_args_wrapper(f: Callable) -> Callable:
         if not enabled:
-            return func
+            return f
 
         @wraps(
-            func,
+            f,
             assigned=(
                 "__module__",
                 "__name__",
@@ -70,9 +70,7 @@ def timed(
                 "__doc__",
             ),
         )
-        def func_wrapper(*args, **kwargs) -> Result:
-            if timeit.template != TEMPLATE:
-                timeit.template = TEMPLATE
+        def func_wrapper(*args, **kwargs) -> TResult:
             with suppress_stdout(enable_stdout):
                 total_time, ret = timeit.timeit(
                     stmt=lambda: func(*args, **kwargs),
@@ -80,7 +78,7 @@ def timed(
                     number=1 if estimate else number,
                 )
 
-            timed_result = TimedResult(
+            timed_result = Result(
                 total_time * (number if estimate else (1 / number)), unit
             )
 

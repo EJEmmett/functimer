@@ -16,7 +16,7 @@ from functimer import TimingException, Unit
     ],
 )
 def test_create_local(_input, expected):
-    with main.create_local(_input, **{}) as local:
+    with main.localized_module(_input, **{}) as local:
         assert list(local.keys())[0] == expected
 
 
@@ -50,9 +50,7 @@ def test_exec_func_exception(_input, error):
 )
 def test_exec_func(monkeypatch, _input, expected):
     with monkeypatch.context() as m:
-        m.setattr(
-            functimer.functimer.timeit, "timeit", lambda *args, **kwargs: (1, expected)
-        )
+        m.setattr(functimer.functimer, "runner", lambda *args, **kwargs: (1, expected))
         runtime, ret = main.exec_func(_input)
         assert ret == expected
 
@@ -82,7 +80,7 @@ def test_exec_func_inner_exception(_input, error):
 def test_cli(monkeypatch, capsys, _input, expected):
     sys.argv[1:] = _input
     with monkeypatch.context() as m:
-        m.setattr(functimer.functimer.timeit, "timeit", lambda *args, **kwargs: (1, 6))
+        m.setattr(functimer.functimer, "runner", lambda *args, **kwargs: (1, 6))
         main.cli()
         out = capsys.readouterr().out
         assert expected in out
