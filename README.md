@@ -1,15 +1,22 @@
 # functimer
 
-A decorator/wrapper package to time a given function.
+A programmatic approach to function runtime estimation.
 
 [![PyPI version](https://badge.fury.io/py/functimer.svg)](https://badge.fury.io/py/functimer)
-[![Build Status](https://travis-ci.com/EJEmmett/functimer.svg?branch=master)](https://travis-ci.com/EJEmmett/functimer)
 [![codecov](https://codecov.io/gh/EJEmmett/functimer/branch/master/graph/badge.svg?token=L0UMBK8AD4)](https://codecov.io/gh/EJEmmett/functimer)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/EJEmmett/functimer.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/EJEmmett/functimer/context:python)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/857af82e6ff14a68b5bf0866e0b44d30)](https://www.codacy.com/gh/EJEmmett/functimer/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EJEmmett/functimer&amp;utm_campaign=Badge_Grade)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ---
+
+## About
+This package first came about as a way to serve my needs during an Algorithms class in college.<br/>
+It started as a function that stored time elapsed results in a global dictionary, where the key was a tuple of the functions name and return value.
+Now it's just a bit different. 
+
+
+
 ## Installation
 - PYPI:
     ```shell
@@ -18,6 +25,7 @@ A decorator/wrapper package to time a given function.
 
 - Manual:
     ```shell
+        poetry install --no-dev
         poetry build
         pip install dist/*.whl
     ```
@@ -26,7 +34,7 @@ A decorator/wrapper package to time a given function.
 How to install [Poetry](https://python-poetry.org/docs/#installation).
 
 ## Quick Example
-### Comprehensive Examples in `examples`
+### Comprehensive Examples in `examples/`
 
 - Python
   ```py

@@ -39,7 +39,7 @@ _unit_map = {
 
 
 @total_ordering
-class TimedResult:
+class Result:
     __slots__ = ["value", "unit", "precision"]
 
     def __init__(self, value: float, unit: Unit, precision: int = 2):
@@ -65,4 +65,4 @@ class TimedResult:
         return self.value == other
 
 
-Result = Union[TimedResult, Tuple[TimedResult, Any]]
+TResult = Union[Result, Tuple[Result, Any]]

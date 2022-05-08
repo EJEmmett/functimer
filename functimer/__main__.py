@@ -4,8 +4,8 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 from contextlib import contextmanager
 from importlib import import_module
 from re import findall, sub
-from types import FunctionType, ModuleType
-from typing import Dict, Union
+from types import ModuleType
+from typing import Callable, Dict, Union
 
 from functimer import TimingException, Unit, timed
 from functimer.classes import Result
@@ -32,22 +32,27 @@ def parse_unit(string: str) -> Unit:
             raise ValueError()
 
 
-@contextmanager
-def create_local(func_chain: str, **kwargs) -> Dict[str, Union[ModuleType, FunctionType]]:
+@contextmanager  # type: ignore
+def localized_module(  # type: ignore
+    func_chain: str, **kwargs
+) -> Dict[str, Union[ModuleType, Callable]]:
     try:
         method = getattr(builtins, func_chain)
-        local = {method.__name__: timed(method, **kwargs, enable_return=True)}
-        yield local
+        builtin_local: Dict[str, Callable] = {
+            method.__name__: timed(method, **kwargs, enable_return=True)
+        }
+        yield builtin_local
     except AttributeError:
-        module, *subattrs, method = func_chain.split(".")
-        module = import_module(module)
-        local = {module.__name__: module}
-        for submodule in subattrs:
+        module_name, *sub_attrs, method = func_chain.split(".")
+        module = import_module(module_name)
+        module_local: Dict[str, ModuleType] = {module.__name__: module}
+        for submodule in sub_attrs:
             module = getattr(module, submodule)
-        store_method = getattr(module, method)
-        setattr(module, method, timed(store_method, **kwargs, enable_return=True))
-        yield local
-        setattr(module, method, store_method)
+        stored_method = getattr(module, method)
+        setattr(module, method, timed(stored_method, **kwargs, enable_return=True))
+        yield module_local
+        # Prevent Mangling of Modules in memory
+        setattr(module, method, stored_method)
 
 
 def exec_func(func: str, **kwargs) -> Result:
@@ -56,7 +61,9 @@ def exec_func(func: str, **kwargs) -> Result:
 
     if not func.startswith("(lambda"):
         func_chain = sub(RE_ARGS, "", func)
-        with create_local(func_chain, **kwargs) as local:
+
+        local: Dict[str, Union[ModuleType, Callable]]
+        with localized_module(func_chain, **kwargs) as local:
             return eval(func, globals(), local)
     else:
         lamb, args = findall(RE_LAMBDA, func)[0]

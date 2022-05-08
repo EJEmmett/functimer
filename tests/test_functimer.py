@@ -1,11 +1,7 @@
 import pytest
 
 import functimer
-
-
-def func():
-    print("func", flush=True)
-    return 10
+from tests.conftest import func
 
 
 def func_input():
@@ -13,13 +9,10 @@ def func_input():
     return x
 
 
-@pytest.fixture
-def mock_timed(monkeypatch):
-    with monkeypatch.context() as m:
-        m.setattr(
-            functimer.functimer.timeit, "timeit", lambda *args, **kwargs: (1, func())
-        )
-        yield functimer.timed
+def test_active_timed():
+    res, ret = functimer.timed((lambda x: x + x), number=1, enable_return=True)(10)
+    assert res < 1
+    assert ret == 20
 
 
 @pytest.mark.parametrize(
@@ -33,7 +26,6 @@ def mock_timed(monkeypatch):
     ],
 )
 def test_timed(mock_timed, kwargs, expected):
-    print(mock_timed(func, **kwargs)())
     assert str(expected) in str(mock_timed(func, **kwargs)())
 
 
@@ -54,8 +46,8 @@ def test_timed_stdout(capsys, mock_timed):
 def test_timed_error(monkeypatch, _input, kwargs, error):
     with monkeypatch.context() as m:
         m.setattr(
-            functimer.functimer.timeit,
-            "timeit",
+            functimer.functimer,
+            "runner",
             lambda *args, **kwargs: (1, func_input()),
         )
         with pytest.raises(error):

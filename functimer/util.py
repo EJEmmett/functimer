@@ -2,19 +2,19 @@ import sys
 from contextlib import contextmanager
 from typing import Union
 
-from functimer.classes import TimedResult, Unit
+from functimer.classes import Result, Unit
 from functimer.exceptions import TimingException
 
 
 class TrapIO:
-    def write(self, *args):
+    def write(self, *args, **kwargs):
         pass
 
     def flush(self):
         pass
 
-    def read(self, *args):
-        raise TimingException("Can't read from stdin while timing!") from None
+    def read(self, *args, **kwargs):
+        raise TimingException("Can't read from stdin while timing!")
 
     readline = read
     readlines = read
@@ -23,19 +23,20 @@ class TrapIO:
 
 @contextmanager
 def suppress_stdout(enable_stdout: bool):
+    stdin_old = sys.stdin
+    sys.stdin = TrapIO()  # type: ignore
     if not enable_stdout:
-        save_stdout = sys.stdout
-        save_stdin = sys.stdin
-        sys.stdout = TrapIO()
-        sys.stdin = TrapIO()
+        stdout_old = sys.stdout
+        sys.stdout = TrapIO()  # type: ignore
         yield
-        sys.stdout = save_stdout
-        sys.stdin = save_stdin
+        sys.stdout = stdout_old
     else:
         yield
 
+    sys.stdin = stdin_old
 
-def get_unit(string: Union[str, TimedResult]) -> Unit:
+
+def get_unit(string: Union[str, Result]) -> Unit:
     """Parse unit from given string or returns the unit attribute from TimerResult object.
 
     Args:
@@ -45,6 +46,6 @@ def get_unit(string: Union[str, TimedResult]) -> Unit:
         Parsed Unit enum.
     """
     # Convenience feature, can just access the unit member personally
-    if isinstance(string, TimedResult):
+    if isinstance(string, Result):
         return string.unit
-    return Unit.from_str(string[-2:].strip())
+    return Unit.from_str(string.strip()[-2:].strip())

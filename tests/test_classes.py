@@ -1,17 +1,17 @@
 import pytest
 
 from functimer import Unit
-from functimer.classes import TimedResult
+from functimer.classes import Result
 
 
 @pytest.fixture
 def timed_result_micro():
-    return TimedResult(1e-6, Unit.MICROSECOND)
+    return Result(1e-6, Unit.MICROSECOND)
 
 
 @pytest.fixture
 def timed_result_milli():
-    return TimedResult(1e-3, Unit.MILLISECOND)
+    return Result(1e-3, Unit.MILLISECOND)
 
 
 def test_timed_result_eq(timed_result_micro):
@@ -40,10 +40,10 @@ def test_timed_result_repr(timed_result_micro, timed_result_milli):
 
     assert (
         repr(t1)
-        == "<functimer.classes.TimedResult(value: 1e-06, unit: Unit.MICROSECOND, precision: 2)>"
+        == "<functimer.classes.Result(value: 1e-06, unit: Unit.MICROSECOND, precision: 2)>"
     )
 
     assert (
         repr(t2)
-        == "<functimer.classes.TimedResult(value: 0.001, unit: Unit.MILLISECOND, precision: 2)>"
+        == "<functimer.classes.Result(value: 0.001, unit: Unit.MILLISECOND, precision: 2)>"
     )

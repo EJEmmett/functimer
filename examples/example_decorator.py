@@ -36,24 +36,19 @@ def disabled_with_return():
 if __name__ == "__main__":
     runtime = timed_sleep(0.3)
     print("Runtime of timed_sleep:", runtime)
-    print()
 
     runtime, ret = timed_with_return()
     print("Runtime of timed_with_return:", runtime)
     print("Returned value of timed_with_return:", ret)
-    print()
 
     runtime = suppress_stdout()
     print("Runtime of suppress_stdout:", runtime)
-    print()
 
     runtime = enabled_stdout()
     print("Runtime of enable_stdout:", runtime)
-    print()
 
     runtime = estimate_func()
     print("Estimated total runtime of estimate_func:", runtime)
-    print()
 
     ret = disabled_with_return()
     print("Returned value of disabled_with_return:", ret)
