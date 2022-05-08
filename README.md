@@ -3,7 +3,6 @@
 A programmatic approach to function runtime estimation.
 
 [![PyPI version](https://badge.fury.io/py/functimer.svg)](https://badge.fury.io/py/functimer)
-[![Build Status](https://travis-ci.com/EJEmmett/functimer.svg?branch=master)](https://travis-ci.com/EJEmmett/functimer)
 [![codecov](https://codecov.io/gh/EJEmmett/functimer/branch/master/graph/badge.svg?token=L0UMBK8AD4)](https://codecov.io/gh/EJEmmett/functimer)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/EJEmmett/functimer.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/EJEmmett/functimer/context:python)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/857af82e6ff14a68b5bf0866e0b44d30)](https://www.codacy.com/gh/EJEmmett/functimer/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EJEmmett/functimer&amp;utm_campaign=Badge_Grade)
