@@ -29,7 +29,7 @@ def parse_unit(string: str) -> Unit:
         try:
             return Unit[string]
         except KeyError:
-            raise ValueError()  # NOQA
+            raise ValueError()
 
 
 @contextmanager  # type: ignore

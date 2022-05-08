@@ -12,6 +12,6 @@ install:
   - poetry install
 script:
   - poetry run pre-commit run --all-files
-  - tox
+  - poetry run tox
 after_success:
   - codecov

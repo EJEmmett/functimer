@@ -7,7 +7,7 @@ from functimer.exceptions import TimingException
 
 
 class TrapIO:
-    def write(self, *args):
+    def write(self, *args, **kwargs):
         pass
 
     def flush(self):
@@ -23,17 +23,17 @@ class TrapIO:
 
 @contextmanager
 def suppress_stdout(enable_stdout: bool):
+    stdin_old = sys.stdin
+    sys.stdin = TrapIO()  # type: ignore
     if not enable_stdout:
-        save_stdout = sys.stdout
-        save_stdin = sys.stdin
-        sys.stdout = TrapIO()
-        sys.stdin = TrapIO()
+        stdout_old = sys.stdout
+        sys.stdout = TrapIO()  # type: ignore
         yield
-        sys.stdout = save_stdout
-        sys.stdin = save_stdin
+        sys.stdout = stdout_old
     else:
         yield
 
+    sys.stdin = stdin_old
 
 
 def get_unit(string: Union[str, Result]) -> Unit:

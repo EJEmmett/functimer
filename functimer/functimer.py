@@ -1,19 +1,12 @@
-import timeit
+import gc
 from functools import wraps
-from typing import Callable
+from time import perf_counter
+from typing import Any, Callable, Tuple
 
 from functimer.classes import Result, TResult, Unit
 from functimer.util import suppress_stdout
 
-TEMPLATE = """
-def inner(_it, _timer{init}):
-    {setup}
-    _t0 = _timer()
-    for _i in _it:
-        ret = {stmt}
-    _t1 = _timer()
-    return _t1 - _t0, ret
-"""
+DEFAULT_TIMER = perf_counter
 
 
 def timed(
@@ -30,19 +23,13 @@ def timed(
 
     Args:
         func:            The function to be wrapped. (None if decorated)
-
         enabled:         Disables timing of wrapped func.
-
         unit:            The scientific unit to format the returned value.
-
         estimate:        Toggle returning a rough estimation of total timer runtime over number
                          executions based on the runtime of one execution.
-
         number:          Number of times to run function, higher values increase accuracy, but take
                          longer.
-
         enable_return:   Whether to return the value from the function.
-
         enable_stdout:   Whether to suppress writes to STDOUT.
                          (Suppressing STDOUT decreases runtime of function)
 
@@ -72,10 +59,8 @@ def timed(
         )
         def func_wrapper(*args, **kwargs) -> TResult:
             with suppress_stdout(enable_stdout):
-                total_time, ret = timeit.timeit(
-                    stmt=lambda: func(*args, **kwargs),
-                    globals=func.__globals__ if hasattr(func, "__globals__") else None,
-                    number=1 if estimate else number,
+                total_time, ret = runner(
+                    lambda: f(*args, **kwargs), number=1 if estimate else number
                 )
 
             timed_result = Result(
@@ -93,5 +78,19 @@ def timed(
     return deco_args_wrapper(func)
 
 
-# Alias
-create_timed_function = timed
+def runner(f: Callable, *, number: int) -> Tuple[float, Any]:
+    def inner():
+        ret = None
+        t0 = DEFAULT_TIMER()
+        for _ in range(number):
+            ret = f()
+        t1 = DEFAULT_TIMER()
+        return t1 - t0, ret
+
+    gc_old = gc.isenabled()
+    gc.disable()
+    try:
+        return inner()
+    finally:
+        if gc_old:
+            gc.enable()
